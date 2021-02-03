@@ -31,7 +31,7 @@ class CustomersEligibleForTreat:
                 distance_from_office = calculate_distance_km(self._OFFICE_LATITUDE, self._OFFICE_LONGITUDE,
                                                              customer_record[self._LATITUDE_KEY],
                                                              customer_record[self._LONGITUDE_KEY])
-                if distance_from_office < self._MAX_DISTANCE:
+                if distance_from_office <= self._MAX_DISTANCE:
                     customers_within_distance.append(customer_record)
         print("CUSTOMERS TO BE INVITED FOR FOOD AND DRINKS:")
         for customer in sorted(customers_within_distance, key=lambda i: i[self._USER_ID_KEY]):
