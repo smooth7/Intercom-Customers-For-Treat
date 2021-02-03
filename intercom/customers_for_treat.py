@@ -61,3 +61,7 @@ class CustomersEligibleForTreat:
         # Parse is Successful
         return True, customer_record
 
+
+if __name__ == "__main__":
+    customers_eligible_for_treat = CustomersEligibleForTreat()
+    customers_eligible_for_treat.print_all_eligible()
