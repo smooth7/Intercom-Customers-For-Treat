@@ -37,7 +37,7 @@ class CustomersEligibleForTreat:
         for customer in sorted(customers_within_distance, key=lambda i: i[self._USER_ID_KEY]):
             print(f"\nName: {customer[self._NAME_KEY]}, User ID: {customer[self._USER_ID_KEY]}")
 
-    def _parse_customer_record(self, customer_string, line_number) -> (bool, dict):
+    def _parse_customer_record(self, customer_string: str, line_number: int) -> (bool, dict):
         # Converts a Customer's string record (which is given in JSON format) to dict
         try:
             customer_record = json.loads(customer_string)
