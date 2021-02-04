@@ -21,7 +21,7 @@ class CustomersEligibleForTreat:
     _OFFICE_LONGITUDE = -6.257664  # Longitude in degrees
     _CUSTOMERS_INFO_URL = "https://s3.amazonaws.com/intercom-take-home-test/customers.txt"
 
-    def print_all_eligible(self):
+    def print_all_eligible(self) -> None:
         customers_within_distance = []
         with request.urlopen(self._CUSTOMERS_INFO_URL) as customers:
             for number, line in enumerate(customers, start=1):
