@@ -2,7 +2,7 @@ import json
 import unittest
 from unittest.mock import patch, call
 
-from intercom.customers_for_treat import CustomersEligibleForTreat
+from customers_for_treat import CustomersEligibleForTreat
 
 
 CUS_1 = '{"latitude": 52.886375, "user_id": 22, "name": "John Oshea", "longitude": -6.3701}'.encode()
@@ -18,9 +18,9 @@ CUS_FIELD_WRONG_TYPE = \
 class TestPrintCustomersEligible(unittest.TestCase):
 
     @patch.object(CustomersEligibleForTreat, "_parse_customer_record")
-    @patch('intercom.customers_for_treat.calculate_distance_km')
+    @patch('customers_for_treat.calculate_distance_km')
     @patch('builtins.print')
-    @patch('intercom.customers_for_treat.request.urlopen')
+    @patch('customers_for_treat.request.urlopen')
     def test_print_pass_output_ordered_by_id(self, mock_cus_list, mock_print, calc_dis, parse_line):
         cus_json = json.loads(CUS_1), json.loads(CUS_2)
         calc_dis.side_effect = [50, 10]
@@ -34,9 +34,9 @@ class TestPrintCustomersEligible(unittest.TestCase):
                                           call('\nName: John Oshea, User ID: 22')])
 
     @patch.object(CustomersEligibleForTreat, "_parse_customer_record")
-    @patch('intercom.customers_for_treat.calculate_distance_km')
+    @patch('customers_for_treat.calculate_distance_km')
     @patch('builtins.print')
-    @patch('intercom.customers_for_treat.request.urlopen')
+    @patch('customers_for_treat.request.urlopen')
     def test_print_fail_output_not_ordered_by_id(self, mock_cus_list, mock_print, calc_dis, parse_line):
         cus_json = json.loads(CUS_1), json.loads(CUS_2)
         calc_dis.side_effect = [50, 10]
@@ -49,9 +49,9 @@ class TestPrintCustomersEligible(unittest.TestCase):
                                          call('\nName: Holland Peter, User ID: 12')])
 
     @patch.object(CustomersEligibleForTreat, "_parse_customer_record")
-    @patch('intercom.customers_for_treat.calculate_distance_km')
+    @patch('customers_for_treat.calculate_distance_km')
     @patch('builtins.print')
-    @patch('intercom.customers_for_treat.request.urlopen')
+    @patch('customers_for_treat.request.urlopen')
     def test_print_cus_distance_too_far(self, mock_cus_list, mock_print, calc_dis, parse_line):
         cus_json = json.loads(CUS_1), json.loads(CUS_2)
         calc_dis.side_effect = [500, 1000]
@@ -63,9 +63,9 @@ class TestPrintCustomersEligible(unittest.TestCase):
                          call('\nName: John Oshea, User ID: 22')] not in mock_print.call_args_list)
 
     @patch.object(CustomersEligibleForTreat, "_parse_customer_record")
-    @patch('intercom.customers_for_treat.calculate_distance_km')
+    @patch('customers_for_treat.calculate_distance_km')
     @patch('builtins.print')
-    @patch('intercom.customers_for_treat.request.urlopen')
+    @patch('customers_for_treat.request.urlopen')
     def test_print_some_cus_distance_too_far(self, mock_cus_list, mock_print, calc_dis, parse_line):
         cus_json = json.loads(CUS_1), json.loads(CUS_2)
         calc_dis.side_effect = [1000, 10]
@@ -77,9 +77,9 @@ class TestPrintCustomersEligible(unittest.TestCase):
         self.assertTrue([call('\nName: John Oshea, User ID: 22')] not in mock_print.call_args_list)
 
     @patch.object(CustomersEligibleForTreat, "_parse_customer_record")
-    @patch('intercom.customers_for_treat.calculate_distance_km')
+    @patch('customers_for_treat.calculate_distance_km')
     @patch('builtins.print')
-    @patch('intercom.customers_for_treat.request.urlopen')
+    @patch('customers_for_treat.request.urlopen')
     def test_print_parse_unsuccessful(self, mock_cus_list, mock_print, calc_dis, parse_line):
         cus_json = json.loads(CUS_1), json.loads(CUS_2)
         calc_dis.side_effect = [100, 10]
@@ -91,9 +91,9 @@ class TestPrintCustomersEligible(unittest.TestCase):
                          call('\nName: John Oshea, User ID: 22')] not in mock_print.call_args_list)
 
     @patch.object(CustomersEligibleForTreat, "_parse_customer_record")
-    @patch('intercom.customers_for_treat.calculate_distance_km')
+    @patch('customers_for_treat.calculate_distance_km')
     @patch('builtins.print')
-    @patch('intercom.customers_for_treat.request.urlopen')
+    @patch('customers_for_treat.request.urlopen')
     def test_print_some_parse_unsuccessful(self, mock_cus_list, mock_print, calc_dis, parse_line):
         cus_json = json.loads(CUS_1), json.loads(CUS_2)
         calc_dis.side_effect = [100, 10]
@@ -108,19 +108,19 @@ class TestPrintCustomersEligible(unittest.TestCase):
 class TestParseCustomerRecord(unittest.TestCase):
 
     def test_parse_customer_record_success(self):
-        parse_output = CustomersEligibleForTreat()._parse_customer_record(CUS_1, 1)
+        parse_output = CustomersEligibleForTreat()._parse_customer_record(CUS_1.decode(), 1)
         self.assertTrue(parse_output, (True, json.loads(CUS_1)))
 
     def test_parse_customer_record_not_json(self):
-        parse_output = CustomersEligibleForTreat()._parse_customer_record(CUS_NOT_JSON_FORMAT, 1)
+        parse_output = CustomersEligibleForTreat()._parse_customer_record(CUS_NOT_JSON_FORMAT.decode(), 1)
         self.assertEqual(parse_output, (False, {}))
 
     def test_parse_customer_missing_field(self):
-        parse_output = CustomersEligibleForTreat()._parse_customer_record(CUS_MISSING_FIELD, 1)
+        parse_output = CustomersEligibleForTreat()._parse_customer_record(CUS_MISSING_FIELD.decode(), 1)
         self.assertEqual(parse_output, (False, {}))
 
     def test_parse_field_wrong_type(self):
-        parse_output = CustomersEligibleForTreat()._parse_customer_record(CUS_FIELD_WRONG_TYPE, 1)
+        parse_output = CustomersEligibleForTreat()._parse_customer_record(CUS_FIELD_WRONG_TYPE.decode(), 1)
         self.assertEqual(parse_output, (False, {}))
     
 

@@ -1,7 +1,7 @@
 import json
 from urllib import request
 
-from intercom.distance import calculate_distance_km
+from distance import calculate_distance_km
 
 
 class CustomersEligibleForTreat:

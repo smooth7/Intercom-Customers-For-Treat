@@ -2,5 +2,9 @@
 
 2. To execute the code, run the customers_for_treat.py module (Under the 'intercom' directory)
 
-3. To execute the tests, run the 'test_customers_for_treat.py' and 'test_distance.py' modules
-   (Under the 'intercom/tests' directory)
+3. The unit tests is located in the folder: intercom/tests/
+
+3. To execute the unit tests, run the following command from a terminal under the 'intercom' directory:
+    python -m unittest discover
+
+
